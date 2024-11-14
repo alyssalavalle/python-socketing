@@ -1,6 +1,6 @@
 **Chat Application (Client-Server Model)**
 
-Course: COMPE-560 - Computer and Data Networks\n
+Course: COMPE-560 - Computer and Data Networks
 Institution: San Diego State University
 
 This project implements a simple client-server chat application using Python’s socket programming and threading. The server relays messages between multiple clients in real-time, allowing them to communicate with each other.
