@@ -5,20 +5,22 @@ SERVER_HOST = '127.0.0.1'  # Localhost for testing; change if needed
 SERVER_PORT = 12345
 
 def receive_messages(client_socket):
+    """Receives messages from the server and displays them."""
     while True:
         try:
             message = client_socket.recv(1024).decode('utf-8')
             if message:
-                print(f"\n{message}")
+                print(f"{message}\n")
             else:
                 print("[SERVER DISCONNECTED]")
                 break
         except:
-            print("[ERROR] Connection lost.")
+            print("Connection lost.")
             client_socket.close()
             break
 
 def send_messages(client_socket):
+    """Sends messages to the server from the user."""
     while True:
         message = input()
         if message.lower() == "quit":
@@ -27,12 +29,12 @@ def send_messages(client_socket):
             client_socket.close()
             break
         elif message.startswith("/private"):
-            # Private message command
             client_socket.send(message.encode('utf-8'))
         elif message.strip():
             client_socket.send(message.encode('utf-8'))
 
 def start_client():
+    """Starts the client and connects to the server."""
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     try:
         client_socket.connect((SERVER_HOST, SERVER_PORT))
@@ -41,6 +43,7 @@ def start_client():
         print(f"[ERROR] Could not connect to the server: {e}")
         return
 
+    # Start threads for receiving and sending messages
     receive_thread = threading.Thread(target=receive_messages, args=(client_socket,))
     send_thread = threading.Thread(target=send_messages, args=(client_socket,))
     receive_thread.start()
