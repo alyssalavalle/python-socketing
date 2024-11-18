@@ -8,7 +8,7 @@ clients = {}  # Dictionary to store clients
 usernames = {}  # Dictionary to map sockets to usernames
 
 def broadcast(message, sender_socket=None):
-    """Broadcasts a message to all clients except the sender."""
+    # Broadcasts a message to all clients except the sender.
     for client in clients.values():
         if client != sender_socket:
             try:
@@ -19,7 +19,7 @@ def broadcast(message, sender_socket=None):
                 remove_client(client)
 
 def handle_client(client_socket, address):
-    """Handles communication with a connected client."""
+    # Handles communication with a connected client.
     try:
         # Prompt the client for a username
         client_socket.send("Please enter a username: ".encode('utf-8'))
@@ -61,14 +61,14 @@ def handle_client(client_socket, address):
         remove_client(client_socket)
 
 def remove_client(client_socket):
-    """Removes the client from the server's active list."""
+    # Removes the client from the server's active list.
     username = usernames.get(client_socket)
     if username:
         del clients[username]
         del usernames[client_socket]
 
 def start_server():
-    """Starts the server and listens for incoming connections."""
+    # Starts the server and listens for incoming connections.
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((SERVER_HOST, SERVER_PORT))
     server.listen()
