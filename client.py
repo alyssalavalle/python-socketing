@@ -21,6 +21,8 @@ def receive_messages(client_socket):
 
 def send_messages(client_socket):
     # Sends messages to the server from the user.
+    print("Reminder: Type 'SEND' before each message to send it to the server.")
+    
     while True:
         message = input()
         if message.lower() == "quit":
@@ -30,12 +32,22 @@ def send_messages(client_socket):
             break
         elif message.startswith("/private"):
             client_socket.send(message.encode('utf-8'))
-        elif message.strip():
-            client_socket.send(message.encode('utf-8'))
+        elif message.startswith("SEND "):
+            # Send only if message starts with "SEND"
+            client_socket.send(message[5:].encode('utf-8'))  # Remove "SEND " prefix before sending
+        else:
+            print("Warning: 'SEND' must appear before every message or command to send it to the server.")
 
 def start_client():
     # Starts the client and connects to the server.
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    while True:
+        command = input("Type 'CONNECT' to connect to the server: ").strip()
+        if command.upper() == "CONNECT":
+            break
+        else:
+            print("Invalid command. Please type 'CONNECT' to connect.")
+
     try:
         client_socket.connect((SERVER_HOST, SERVER_PORT))
         print("[CONNECTED] Connected to the server.")
